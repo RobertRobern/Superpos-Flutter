@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superpos/features/pos/data/in_memory_product_repository.dart';
-import 'package:superpos/features/pos/data/in_memory_transaction_repository.dart';
 import 'package:superpos/features/pos/presentation/providers/cart_provider.dart';
 import 'package:superpos/features/pos/presentation/pages/pos_home_page.dart';
 
@@ -9,19 +8,13 @@ void main() {
   // Create simple in-memory repositories (Phase 1). These can later be
   // replaced by database-backed implementations without touching presentation.
   final productRepository = InMemoryProductRepository();
-  final transactionRepository = InMemoryTransactionRepository();
 
   // Provide repositories and providers to the app using Provider package.
   runApp(
     MultiProvider(
       providers: [
         Provider<InMemoryProductRepository>.value(value: productRepository),
-        Provider<InMemoryTransactionRepository>.value(
-          value: transactionRepository,
-        ),
-        ChangeNotifierProvider<CartProvider>(
-          create: (_) => CartProvider(transactionRepository),
-        ),
+        ChangeNotifierProvider<CartProvider>(create: (_) => CartProvider()),
       ],
       child: const MyApp(),
     ),
